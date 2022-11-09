@@ -1,0 +1,13 @@
+<div>
+    <h2 style="text-decoration: underline; margin: 30px;">PRODUCTOS</h2>
+    {{#each productos}}
+    <div >
+        <ul style="list-style-position:inside; list-style-type:square;">
+            <li style="background: #DDD; margin:4px; padding:4px;">{{this.title}}</li>
+            <li style="background: #DDD; margin:4px; padding:4px;">{{this.price}}</li>
+            <img style="background: #DDD; margin:4px; padding:4px;"  whidth="200" src={{this.photo}}/>
+        </ul>
+        
+    </div>
+    {{/each}}
+</div>
