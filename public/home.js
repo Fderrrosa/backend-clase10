@@ -1,0 +1,1 @@
+console.log("js home view");
