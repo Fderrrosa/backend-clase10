@@ -10,5 +10,11 @@
     "title": "remera verde",
     "price": "$5000",
     "photo": "https://d2r9epyceweg5n.cloudfront.net/stores/001/205/102/products/remera-lisa-vi-rj1-122009f0e7fe0bfa3715906956218434-480-0.jpg"
+  },
+  {
+    "id": 5,
+    "title": "zapatilla fila hombre",
+    "price": "$23.500",
+    "photo": "https://filaar.vtexassets.com/arquivos/ids/6297508-800-auto?v=638023186259700000&width=800&height=auto&aspect=true"
   }
 ]

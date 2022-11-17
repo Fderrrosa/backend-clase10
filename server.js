@@ -4,11 +4,23 @@ const express = require("express");
 //se carga el modulo handlebars
 const handlebars = require("express-handlebars");
 
+//se carga modulo socket.io
+const { Server: IOServer } = require('socket.io');
+
+//se carga modulo Http?
+const { Server: HttpServer } = require('http');
+
 //se crea el servidor
 const app = express();
 
+//se inicializa la funcion
+const httpServer = new HttpServer(app);
+const io = new IOServer(httpServer);
+
 //se levanta el servidor
-app.listen(8080,()=>console.log("server listening on port 8080"));
+//ESTE NO app.listen(8080,()=>console.log("server listening on port 8080"));
+
+httpServer.listen(3000, () => console.log('SERVER ON'))
 
 
 //ajustes
@@ -19,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const path = require("path");
 const viewsFolder = path.join(__dirname, "views")
-const Contenedor = require("./container/contenedor")
+const Contenedor = require("./src/container/contenedor")
 const productosService = new Contenedor("productos.txt");
 
 
@@ -35,8 +47,12 @@ app.set("view engine", "handlebars");
 
 
 //rutas 
-app.get("/", (req, res)=>{
-    res.render("home")
+//app.get("/", (req, res)=>{
+  //  res.render("home")
+//})
+
+app.get("/", (req, res) =>{
+    res.sendFile('index.html', {root: __dirname })
 })
 
 app.get("/productos", async(req, res)=>{
@@ -59,4 +75,11 @@ app.post("/productos",async(req, res)=>{
 
 app.get("/contact", (req, res)=>{
     res.render("contacto")
+})
+
+
+
+io.on('connection', (socket) => {
+    console.log('Usuario conectado')
+    socket.emit('mi mensaje', 'este es mi mensaje desde el servidor')
 })
