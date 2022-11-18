@@ -27,7 +27,7 @@ const server = app.listen(8080,()=>console.log("server listening on port 8080"))
 
 //ajustes
 app.use(express.json());
-app.use(express.static(__dirname+"./src/public"));
+app.use(express.static(__dirname+"/public"));
 app.use(express.urlencoded({extended:true})); 
 
 
@@ -44,20 +44,20 @@ app.set("view engine", "handlebars");
 
 //socket del lado del backend
 const io = new Server(server);
-io.on("connection", async(socket)=>{
+io.on("connection", (socket)=>{
     console.log("nuevo cliente conectado");
 
 
     //cada vez que el socket se conecte le enviamos los productos
-    socket.emit("productsArray", await productosService.getAll());
+    io.sockets.emit("productsArray", { productosService: prod.getAll()});
 
     //recibir el producto
-    socket.on("newProduct", async(data)=>{
+    socket.on("newProduct", (data)=>{
         //data es el producto que recibo del formulario
-        await productosService.save(data);
-
+        productosService.save(data);
+        console.log(data);
         //enviar todos los productos actualizados
-        io.sockets.emit("productsArray", await productosService.getAll());
+        io.sockets.emit("productsArray", { productosService: prod.getAll()});
     })
 })
 

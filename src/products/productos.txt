@@ -1,7 +1,7 @@
 [
   {
     "id": 3,
-    "title": "pantanlon",
+    "title": "pantalon",
     "price": "4000",
     "photo": "https://equus.vtexassets.com/arquivos/ids/211564-500-auto?v=637523870339630000&width=500&height=auto&aspect=true"
   },

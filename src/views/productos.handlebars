@@ -1,13 +1,29 @@
-<div>
-    <h2 style="text-decoration: underline; margin: 30px;">PRODUCTOS</h2>
-    {{#each productos}}
-    <div >
-        <ul style="list-style-position:inside; list-style-type:square;">
-            <li style="background: #DDD; margin:4px; padding:4px;">{{this.title}}</li>
-            <li style="background: #DDD; margin:4px; padding:4px;">{{this.price}}</li>
-            <img style="background: #DDD; margin:4px; padding:4px;"  whidth="200" src={{this.photo}}/>
-        </ul>
-        
+ 
+{{#if productos }}
+<button class="btn btn-outline-dark" style="color: rgb(180, 64, 10);" onclick= "window.location.href = '/'">agregar nuevo producto</button>
+ <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Product</th>
+      <th scope="col">Price</th>
+      <th scope="col">Photo of product</th>
+    </tr>
+  </thead>
+  <tbody>
+       {{#each productos}}
+    <tr>
+      <th scope="row">{{ this.id }}</th>
+      <td>{{ this.title }}</td>
+      <td>${{ this.price }}</td>
+      <td><img src="{{this.photo}}" width="100" alt=""></td>
+    </tr>
+     {{/each}}
+  </tbody>
+</table>
+
+{{else}}
+    <div class="alert alert-danger" role="alert">
+    {{error}}
     </div>
-    {{/each}}
-</div>
+{{/if }}

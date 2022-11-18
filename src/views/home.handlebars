@@ -1,19 +1,24 @@
+<h2>Crear producto</h2>
 
-<div class="form">
-    <h2 style="text-decoration: underline; margin: 30px;">HOME</h2>
-    <form id="productForm" >
-        <label style="margin-bottom: 12px; display: block; font-weight: bold; margin: 10px" >Titulo</label>
-        <input style="margin-bottom: 12px; display: block; font-weight: bold; margin: 10px" name="title" id="title">
-        <label style="margin-bottom: 12px; display: block; font-weight: bold; margin: 10px">Precio</label>
-        <input style="margin-bottom: 12px; display: block; font-weight: bold; margin: 10px" name="price" id="price">
-        <label style="margin-bottom: 12px; display: block; font-weight: bold; margin: 10px">Imagen</label>
-        <input style="margin-bottom: 12px; display: block; font-weight: bold; margin: 10px" name="photo" id="photo">
-        <button type="submit" style="margin: 10px" >Guardar informacion</button>
-    </form>
-</div>
-<div id="productsContainer"></div>
-{{!--importamos los importamos los scripts
-method="post" action="/productos"--}}
-{{> importScripts }}
-<script src="/socket.io/socket.io.js"></script>
-<script src="../public/home.js">
+<div class="box">
+      {{!-- <form action="api/productos/guardar" method="POST" > --}}
+       
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input id ="title" class="form-control" name="title" type="text" />
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input id ="price" class="form-control"  name="price" type="text" />
+        </div>
+        <div class="form-group">
+            <label for="photo">Photo</label>
+            <input id ="photo" class="form-control"  name="photo" type="text" />
+        </div>
+        <button id="addList" class="btn btn-success"  >Enviar</button>
+      {{!-- </form> --}}
+    </div>
+
+     <div id="table">
+        
+     </div>
