@@ -1,5 +1,5 @@
 // inicializamos la conexion
-const socket = io.connect();
+const socket = io();
 
 socket.on("products list", (data) => {
   console.log("products list", data);
