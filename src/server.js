@@ -7,8 +7,8 @@ const handlebars = require("express-handlebars");
 const { Server } = require('socket.io');
 
 const path = require("path");
-const viewsFolder = path.join(__dirname, "/src/views")
-const Contenedor = require("./src/container/contenedor")
+const viewsFolder = path.join(__dirname, "/views")
+const Contenedor = require("./container/contenedor")
 const productosService = new Contenedor("productos.txt");
 
 //servidor de express
