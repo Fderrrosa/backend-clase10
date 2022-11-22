@@ -1,127 +1,96 @@
 const fs = require("fs");
+const path = require("path");
 
-/**
- * Converts a JavaScript Object Notation (JSON) string into an object.
- * @param {json} json
- * @returns object
- */
-const JsonToObject = (json) => {
-  try {
-    if (json.length > 0) {
-      return JSON.parse(json);
-    } else {
-      return JSON.parse("[]");
+class Contenedor{
+    constructor(filename){
+        this.filename = path.join(__dirname,"..",`products/${filename}`);
     }
-  } catch (error) {
-    console.log("Se produjo un error convirtiendo el Json a Objecto");
-    throw error;
-  }
-};
 
-/**
- * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
- * @param {object} object
- * @returns json
- */
-const ObjectToJson = (object) => {
-  try {
-    return JSON.stringify(object);
-  } catch (error) {
-    console.log("Se produjo un error convirtiendo el Objecto a Json");
-    throw error;
-  }
-};
-
-/**
- * Read a file
- * @param {string} fileName
- * @returns a content of a file
- */
-const readfile = async (fileName) => {
-  try {
-    return await fs.promises.readFile(fileName, "utf-8");
-  } catch (error) {
-    console.log("Se produjo un error leyendo el archivo solicitado");
-    throw error;
-  }
-};
-
-/**
- * creates a empty new file
- * @param {string} fileName
- */
-const newFile = async (fileName) => {
-  try {
-    await fs.promises.writeFile(fileName, "");
-  } catch (e) {
-    throw error;
-  }
-};
-
-/**
- * Check that the file exists. Call a new file if not.
- * @param {string} fileName
- */
-const fileExist = async (fileName) => {
-  if (fs.existsSync(fileName) == false) {
-    await newFile(fileName);
-  }
-};
-
-/**
- * write a json data in a file
- * @param {string} fileName
- * @param {json} json
- */
-const writeFile = async (fileName, json) => {
-  try {
-    await fs.promises.writeFile(fileName, json);
-  } catch (error) {
-    throw error;
-  }
-};
-
-class Contenedor {
-
-  constructor(file) {
-    this.file = file;
-  }
-
-  /**
-   * @param {string} messages
-   * @returns an Product numeric ID
-   */
-  async save(message) {
-    try {
-
-      //check if file exists
-      await fileExist(this.file);
-      let messages = JsonToObject(await readfile(this.file));
-
-      messages.push(message);
-      //write file          
-      await writeFile(this.file, ObjectToJson(messages));
-    } catch (error) {
-      throw error;
+    save = async(product)=>{
+        try {
+            //leer el archivo existe
+            if(fs.existsSync(this.filename)){
+                const productos = await this.getAll();
+                const lastIdAdded = productos.reduce((acc,item)=>item.id > acc ? acc = item.id : acc, 0);
+                const newProduct={
+                    id: lastIdAdded+1,
+                    ...product
+                }
+                productos.push(newProduct);
+                await fs.promises.writeFile(this.filename, JSON.stringify(productos, null, 2))
+                return productos;
+            } else {
+                // si el archivo no existe
+                const newProduct={
+                    id:1,
+                    ...product
+                }
+                //creamos el archivo
+                await fs.promises.writeFile(this.filename, JSON.stringify([newProduct], null, 2));
+            }
+        } catch (error) {
+            console.log("error saving",error);
+        }
     }
-  }
+  
 
-  /**
-   * Return all prodcts in the file
-   * @params none
-   * @returns a object of file data
-   */
-  async getAll() {
-    try {
 
-      await fileExist(this.file);
-      return JsonToObject(await readfile(this.file));
-
-    } catch (error) {
-      throw error;
+    getById = async(id)=>{
+        try {
+            if(fs.existsSync(this.filename)){
+                const productos = await this.getAll();
+                const producto = productos.find(item=>item.id===id);
+                return producto
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
-  }
 
+    getAll = async()=>{
+        try {
+            const contenido = await fs.promises.readFile(this.filename,"utf8");
+            const productos = JSON.parse(contenido);
+            return productos
+        } catch (error) {
+            console.log(error)
+        }
+    }
+     
+
+    deleteById = async(id)=>{
+        try {
+            const productos = await this.getAll();
+            const newProducts = productos.filter(item=>item.id!==id);
+            await fs.promises.writeFile(this.filename, JSON.stringify(newProducts, null, 2));
+            return `product with id:${id} deleted`;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    deleteAll = async()=>{
+        try {
+            await fs.promises.writeFile(this.filename, JSON.stringify([]));
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    updateById = async(id, body)=>{
+        try {
+            const productos = await this.getAll();
+            const productPos = productos.findIndex(elm=>elm.id === id);
+            productos[productPos] = {
+                id:id,
+                ...body
+            };
+            await fs.promises.writeFile(this.filename, JSON.stringify(productos, null, 2))
+            return productos;
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 module.exports = Contenedor;

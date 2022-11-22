@@ -1,14 +1,32 @@
 [
   {
-    "id": 3,
+    "id": 1,
     "title": "pantalon",
     "price": "4000",
     "photo": "https://equus.vtexassets.com/arquivos/ids/211564-500-auto?v=637523870339630000&width=500&height=auto&aspect=true"
   },
   {
+    "id": 2,
+    "title": "campera de cuero",
+    "price": "130.000",
+    "photo": "https://http2.mlstatic.com/D_NQ_NP_809543-MLA41634735796_052020-O.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Remera unisex- Rosa claro",
+    "price": "3290",
+    "photo": "https://equus.vtexassets.com/arquivos/ids/203563-500-auto?v=637395225754170000&width=500&height=auto&aspect=true"
+  },
+  {
+    "id": 4,
+    "title": "Vestido azul claro ",
+    "price": "98999",
+    "photo": "https://cdn0.casamientos.com.ar/article-dress/3014/original/1280/jpg/m334103.jpeg"
+  },
+  {
     "id": 5,
-    "title": "zapatilla fila hombre",
-    "price": "$23.500",
-    "photo": "https://filaar.vtexassets.com/arquivos/ids/6297508-800-auto?v=638023186259700000&width=800&height=auto&aspect=true"
+    "title": "Traje gris claro",
+    "price": "230550",
+    "photo": "https://i.pinimg.com/474x/c1/a8/25/c1a82563792badc1b3d279a4c62dc09b.jpg"
   }
 ]

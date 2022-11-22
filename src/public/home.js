@@ -1,52 +1,35 @@
 // inicializamos la conexion
-const socket = io();
+const socketClient = io();
 
-socket.on("products list", (data) => {
-  console.log("products list", data);
+
+const productForm = document.getElementById("productForm");
+productForm.addEventListener("submit", (event)=>{
+    event.preventDefault();
+    const product = {
+        title: document.getElementById("title").value,
+        price: document.getElementById("price").value,
+        photo: document.getElementById("photo").value
+    }
+   
+   
+    socketClient.emit("newProduct", product);
 });
 
-const $titleData = document.getElementById("title");
-const $priceData = document.getElementById("price");
-const $photoData = document.getElementById("photo");
-const $getAll = document.getElementById("getAll");
-const $table = document.getElementById("table");
+document.addEventListener('DOMContentLoaded', function(){
+    let formulario = document.getElementById('productForm');
+    formulario.addEventListener('submit', function() {
+      formulario.reset();
+    });
+  });
 
 
+const productosContainer = document.getElementById("productosContainer");
 
-const template = Handlebars.compile(`
-<div class="table-responsive">
-    <table class="table table-dark">
-        <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Photo</th>
-        </tr>
-        {{#each products}}
-        <tr>
-            <td>{{this.title}}</td>
-            <td>'$'{{this.price}}</td>
-            <td><img width="50" src={{this.photo}} alt="sin imagen"></td>
-        </tr>
-        {{/each}}
-    </table>
-</div>
-`);
-
-socket.on("productsArray", (data) => {
-    console.log("--->",data)
-  $("#table").html(
-    template({  products: data.products })
-  );
-});
-
-// Cuando el usuario haga click en el boton se envia el socket con el mensaje del input
-const addProduct = () => {
-  const data = {
-    title: $titleData.value,
-    price: $priceData.value,
-    photo: $photoData.value
-  };
-  socket.emit("newProduct", data);
-};
-
-$addList.addEventListener("click", addProduct);
+socketClient.on("productsArray", async(data)=>{
+    console.log(data)
+    const templateTable = await fetch("./templates/productos.handlebars");
+    const templateFormat = await templateTable.text();
+    const template = Handlebars.compile(templateFormat);
+    const html = template({productos:data});
+    productosContainer.innerHTML = html;
+})

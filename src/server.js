@@ -16,12 +16,18 @@ const app = express();
 const server = app.listen(8080,()=>console.log("server listening on port 8080"));
 
 
+
+
+
+//NO BORRAR TODAVIA
 //se inicializa la funcion
 //const httpServer = new HttpServer(app);
 //const io = new IOServer(httpServer);
 //se carga modulo Http?
 //const { Server: HttpServer } = require('http');
 //httpServer.listen(3000, () => console.log('SERVER ON'))
+
+
 
 
 
@@ -44,20 +50,19 @@ app.set("view engine", "handlebars");
 
 //socket del lado del backend
 const io = new Server(server);
-io.on("connection", (socket)=>{
+io.on("connection", async(socket)=>{
     console.log("nuevo cliente conectado");
 
 
-    //cada vez que el socket se conecte le enviamos los productos
-    io.sockets.emit("productsArray", { productosService: prod.getAll()});
+    socket.emit("productsArray", await productosService.getAll());
 
     //recibir el producto
-    socket.on("newProduct", (data)=>{
+    socket.on("newProduct", async(data)=>{
         //data es el producto que recibo del formulario
-        productosService.save(data);
-        console.log(data);
+        await productosService.save(data);
+
         //enviar todos los productos actualizados
-        io.sockets.emit("productsArray", { productosService: prod.getAll()});
+        io.sockets.emit("productsArray", await productosService.getAll());
     })
 })
 
