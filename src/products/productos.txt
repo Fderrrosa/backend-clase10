@@ -28,5 +28,11 @@
     "title": "Traje gris claro",
     "price": "230550",
     "photo": "https://i.pinimg.com/474x/c1/a8/25/c1a82563792badc1b3d279a4c62dc09b.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Zapatilla Jordan rojas",
+    "price": "79999",
+    "photo": "https://d22fxaf9t8d39k.cloudfront.net/eabac4302a805b334ab3532230e516e8b7f13471f679052f6a7417648d274c3235305.jpeg"
   }
 ]

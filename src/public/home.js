@@ -1,7 +1,7 @@
 // inicializamos la conexion
 const socketClient = io();
 
-
+//PRODUCTOS
 const productForm = document.getElementById("productForm");
 productForm.addEventListener("submit", (event)=>{
     event.preventDefault();
@@ -33,3 +33,4 @@ socketClient.on("productsArray", async(data)=>{
     const html = template({productos:data});
     productosContainer.innerHTML = html;
 })
+

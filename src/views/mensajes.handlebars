@@ -1,9 +1,12 @@
-{{#if mensajes.length}}
-    <ul class="list-group list-group-flush">
-        {{#each mensajes}}
-            <li id="mensajesHistorial" style="display: flex;" class="list-group-item">
-                <p id="correo">{{this.correo}}:&nbsp;</p><p id="msj">{{this.msj}}</p><p id="fechaMensaje">{{this.fecha}}</p>
-            </li>
-        {{/each}}
-    </ul>
-{{/if}}
+<div style="color: rgb(180, 64, 10);">
+    <h2>Centro de Mensajes</h2>
+    <form>
+        <input id="inputName" type="text" placeholder="name"><br>
+        <input id="inputEmail" type="text" placeholder="email"><br>
+    <textarea id="inputMensaje" type="text" placeholder="mensaje"></textarea><br>
+    <button id="botonEnviar">enviar</button>
+    <div id="listaMensajes"></div>
+    </form>
+    </div>
+    {{> importScripts }}
+<script src="../public/mensajes.js"></script>

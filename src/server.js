@@ -1,16 +1,21 @@
 //importo express
 const express = require("express");
 
+
 //se carga el modulo handlebars
 const handlebars = require("express-handlebars");
 //se carga modulo socket.io
 const { Server } = require('socket.io');
 
+//const Msj = require('./container/mensajes');
+
 const path = require("path");
 const viewsFolder = path.join(__dirname, "/views")
-const Contenedor = require("./container/contenedor")
+const Contenedor = require("./container/contenedor");
 const productosService = new Contenedor("productos.txt");
-
+const Msj = require("./container/mensajes");
+const ServiceMsj = new Msj("messages.txt");
+const { ClientRequest } = require("http");
 //servidor de express
 const app = express();
 const server = app.listen(8080,()=>console.log("server listening on port 8080"));
@@ -47,22 +52,23 @@ app.set("views", viewsFolder);
 app.set("view engine", "handlebars");
 
 
-
+const mensajes = [];
 //socket del lado del backend
 const io = new Server(server);
 io.on("connection", async(socket)=>{
     console.log("nuevo cliente conectado");
 
-
+//PRODUCTOS
     socket.emit("productsArray", await productosService.getAll());
-
-    //recibir el producto
     socket.on("newProduct", async(data)=>{
-        //data es el producto que recibo del formulario
         await productosService.save(data);
-
-        //enviar todos los productos actualizados
         io.sockets.emit("productsArray", await productosService.getAll());
+    })
+//MENSAJES
+socket.emit("mensajesActualizados", await ServiceMsj.getMensajes());
+    socket.on("nuevoMensaje", async(data)=>{
+        await ServiceMsj.guardar(data);
+        io.sockets.emit("mensajesActualizados", await ServiceMsj.getMensajes());
     })
 })
 
@@ -72,6 +78,11 @@ io.on("connection", async(socket)=>{
 //rutas 
 app.get("/",(req, res)=>{
     res.render("home")
+})
+
+
+app.get("/mensajes",(req, res)=>{
+    res.render("mensajes")
 })
 
 
@@ -91,6 +102,20 @@ app.post("/productos",async(req, res)=>{
   res.redirect("/");
 })
 
+app.get("/mensajes", async(req, res)=>{
+    const productos = await ServiceMsj.getMensajes();
+    console.log(productos)
+    res.render("productos", {
+        productos:productos
+    })
+})
+ 
+
+app.post("/mensajes",async(req, res)=>{
+  const newMensaje = req.body;
+  await ServiceMsj.guardar(newMensaje);
+  res.redirect("/");
+})
 
 
 
